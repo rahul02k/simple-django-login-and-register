@@ -4,7 +4,6 @@
 
 {% get_current_language as language_code %}
 
-<!DOCTYPE html>
 <html lang="{{ language_code }}">
 <head>
 
@@ -18,8 +17,7 @@
 
     <title>Simple Django Login and Registration</title>
 
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
 </head>
 
@@ -77,11 +75,7 @@
 
 </div>
 
-<script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-<script src="{% static 'vendor/popper/popper.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-
-<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
 </body>
 </html>
