@@ -9,8 +9,7 @@ SECRET_KEY = '3d305kajG5Jy8KBafCMpHwDIsNi0SqVaW'
 
 DEBUG = False
 ALLOWED_HOSTS = [
-    'ubnl-auth.herokuapp.com',
-]
+    'ubnl-auth.herokuapp.com']
 
 SITE_ID = 1
 
@@ -63,12 +62,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = ''
-EMAIL_HOST_USER = ''
-DEFAULT_FROM_EMAIL = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_HOST_USER = 'no-reply@ubnl.in'
+DEFAULT_FROM_EMAIL = 'no-reply@ubnl.in'
+EMAIL_HOST_PASSWORD = 'Zaur72721@'
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
