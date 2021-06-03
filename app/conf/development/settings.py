@@ -11,7 +11,7 @@ CONTENT_DIR = os.path.join(BASE_DIR, 'content')
 SECRET_KEY = 'NhfTvayqggTBPswCXXhWaN69HuglgZIkM'
 
 DEBUG = True
-ALLOWED_HOSTS = ['ubnl-auth.herokuapp.com']
+ALLOWED_HOSTS = ['ubnl-auth.herokuapp.com','127.0.0.1']
 
 SITE_ID = 1
 
@@ -65,10 +65,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.path.join(CONTENT_DIR, 'tmp/emails')
-EMAIL_HOST_USER = 'test@example.com'
-DEFAULT_FROM_EMAIL = 'test@example.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST_USER = 'no-reply@ubnl.in'
+DEFAULT_FROM_EMAIL = 'no-reply@ubnl.in'
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_HOST_PASSWORD = 'Zaur72721@'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
 
 DATABASES = {
     'default': {
