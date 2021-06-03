@@ -11,7 +11,7 @@ CONTENT_DIR = os.path.join(BASE_DIR, 'content')
 SECRET_KEY = 'NhfTvayqggTBPswCXXhWaN69HuglgZIkM'
 
 DEBUG = True
-ALLOWED_HOSTS = ['ubnl-auth.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['ubnl-auth.herokuapp.com']
 
 SITE_ID = 1
 
