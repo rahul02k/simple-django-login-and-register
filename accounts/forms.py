@@ -8,6 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from .models import DashboardAdminModel,DashboardCustomer
 
 
 class UserCacheMixin:
@@ -253,3 +254,18 @@ class RemindUsernameForm(UserCacheMixin, forms.Form):
         self.user_cache = user
 
         return email
+
+
+# create a ModelForm
+class DashboardAdmin(forms.ModelForm):
+    # specify the name of model to use
+    class Meta:
+        model = DashboardAdminModel
+        fields = "__all__"
+
+
+class DashboardCustomer(forms.ModelForm):
+    # specify the name of model to use
+    class Meta:
+        model = DashboardCustomer
+        fields = "__all__"

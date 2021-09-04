@@ -6,7 +6,7 @@ from django.contrib.auth.views import (
     LogoutView as BaseLogoutView, PasswordChangeView as BasePasswordChangeView,
     PasswordResetDoneView as BasePasswordResetDoneView, PasswordResetConfirmView as BasePasswordResetConfirmView,
 )
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.crypto import get_random_string
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
@@ -18,6 +18,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import View, FormView
 from django.conf import settings
+from .forms import DashboardAdmin, DashboardCustomer
 
 from .utils import (
     send_activation_email, send_reset_password_email, send_forgotten_username_email, send_activation_change_email,
@@ -329,3 +330,37 @@ class RestorePasswordDoneView(BasePasswordResetDoneView):
 
 class LogOutView(LoginRequiredMixin, BaseLogoutView):
     template_name = 'accounts/log_out.html'
+
+
+def dashboard_admin_view(request):
+    context = {}
+
+    # create object of form
+    form = DashboardAdmin(request.POST or None, request.FILES or None)
+
+    # check if form data is valid
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+        messages.success(request, 'Form submission successful')
+
+    context['form'] = form
+    return render(request, "accounts/dashboard_admin.html", context)
+
+
+def dashboard_customer_view(request):
+    context = {}
+
+    # create object of form
+    form = DashboardCustomer(request.POST or None, request.FILES or None)
+
+    # check if form data is valid
+    if form.is_valid():
+        # save the form data to model
+        form.save()
+        messages.success(request, 'Form submission successful')
+
+
+
+    context['form'] = form
+    return render(request, "accounts/dashboard_customer.html", context)
