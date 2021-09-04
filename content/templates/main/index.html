@@ -6,9 +6,9 @@
 
     {% if request.user.is_authenticated %}
 
-        {% trans 'Your username is' %} <b>{{ request.user.username }}</b>.
-
-    {% else %}
+{% trans '<h1 style="text-align: center">Welcome to UBNL Username</h1>  <b>request.user.username</b> ' %} .<br>
+<h3 style="padding: 1%;text-align: center">Click below For Financial Freedcom</h3>
+<form style="text-align: center"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_HQVGur85NynzUt" async> </script> </form>    {% else %}
 
         {% trans 'You are a guest.' %}
 
