@@ -360,7 +360,5 @@ def dashboard_customer_view(request):
         form.save()
         messages.success(request, 'Form submission successful')
 
-
-
     context['form'] = form
     return render(request, "accounts/dashboard_customer.html", context)
