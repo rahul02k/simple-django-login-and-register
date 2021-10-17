@@ -5,10 +5,12 @@
 {% block content %}
 
     {% if request.user.is_authenticated %}
-
-        {% trans 'Welcome to UBNL Username:' %} <b>{{request.user.username}}</b><br>
-        <h3 style="padding: 1%;text-align: left">Click below For Financial Freedom</h3>
-        <form style="padding: 1%;text-align: left"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_HQVGur85NynzUt" async> </script> </form>
+        <div class="container">
+            {% trans '<h3>Welcome to UBNL username:' %} <i>{{request.user.username}}</i></h3><br>
+        <h4>Click below for Investment</h4>
+        <form style="padding-top: 1%"><script src="https://checkout.razorpay.com/v1/payment-button.js" data-payment_button_id="pl_HQVGur85NynzUt" async> </script> </form>
+        <button type="button" class="btn btn-info" ><a style="text-decoration: None" href="/accounts/dashboard_transaction">Check your past transactions</a></button>
+        </div>
     {% else %}
         {% trans 'You are a guest.' %}
 

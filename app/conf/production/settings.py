@@ -23,7 +23,6 @@ INSTALLED_APPS = [
 
     # Vendor apps
     'bootstrap4',
-
     # Application apps
     'main',
     'accounts',
