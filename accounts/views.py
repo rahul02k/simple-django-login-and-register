@@ -1,7 +1,12 @@
+import time
+import warnings
+
+import razorpay
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, REDIRECT_FIELD_NAME
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import (
     LogoutView as BaseLogoutView, PasswordChangeView as BasePasswordChangeView,
     PasswordResetDoneView as BasePasswordResetDoneView, PasswordResetConfirmView as BasePasswordResetConfirmView,
@@ -9,26 +14,27 @@ from django.contrib.auth.views import (
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.crypto import get_random_string
 from django.utils.decorators import method_decorator
-from django.utils.http import is_safe_url
 from django.utils.encoding import force_bytes
+from django.utils.http import is_safe_url
 from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import View, FormView
-from django.conf import settings
-from .forms import DashboardAdmin, DashboardCustomer
 
-from .utils import (
-    send_activation_email, send_reset_password_email, send_forgotten_username_email, send_activation_change_email,
-)
+from .forms import DashboardAdmin, DashboardCustomer
 from .forms import (
     SignInViaUsernameForm, SignInViaEmailForm, SignInViaEmailOrUsernameForm, SignUpForm,
     RestorePasswordForm, RestorePasswordViaEmailOrUsernameForm, RemindUsernameForm,
     ResendActivationCodeForm, ResendActivationCodeViaEmailForm, ChangeProfileForm, ChangeEmailForm,
 )
 from .models import Activation
+from .utils import (
+    send_activation_email, send_reset_password_email, send_forgotten_username_email, send_activation_change_email,
+)
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 class GuestOnlyView(View):
@@ -362,3 +368,78 @@ def dashboard_customer_view(request):
 
     context['form'] = form
     return render(request, "accounts/dashboard_customer.html", context)
+
+
+def get_payment_data_by_username(ubnl_username, keys, fetch_count=5):
+    client = razorpay.Client(auth=("rzp_test_LdUdlzj5gDbAQx", "LsMk8NUyq48XLSzkAVxLbDxI"))
+    master_dict = {}
+    i = 0
+    is_empty = False
+    payment_count = 1
+    total_amount = 0
+    while not is_empty:
+        payment_data = client.payment.fetch_all({'count': fetch_count, 'skip': fetch_count * i})
+        keys = keys
+        for payment_item in payment_data['items']:
+            if payment_item['notes'].get('ubnl_username', 'NA') == ubnl_username:
+                user_data = {}
+                total_amount += payment_item['amount']
+                for key in keys:
+                    if key == 'created_at':
+                        user_data[key] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(payment_item[key]))
+                    else:
+                        user_data[key] = payment_item[key]
+                master_dict[str(payment_count)] = user_data
+                payment_count += 1
+        if payment_data['count'] < fetch_count:
+            is_empty = True
+        i += 1
+    return master_dict, total_amount
+
+
+def dashboard_customer_transaction_view(request):
+    # transaction_data = get_payment_data_by_email()
+    # context = {"payments":{'id': ['pay_I4sCBUyDQOaqOZ'],
+    #                     'amount': [500000],
+    #                     'currency': ['INR'],
+    #                     'status': ['captured'],
+    #                     'method': ['wallet'],
+    #                     'amount_refunded': [0],
+    #                     'refund_status': [None],
+    #                     'notes': [{'email': 'rahul.thakur95k@gmail.com',
+    #                                'phone': '8840616268',
+    #                                'ubnl_username': 'rahul_thakur'}],
+    #                     'fee': [11800],
+    #                     'tax': [1800],
+    #                     'error_code': [None]}}
+    # print(transaction_data)
+    # df_data = pd.DataFrame.from_dict(context)
+    # print(request.__dict__)
+    payments, total_amount = get_payment_data_by_username(ubnl_username=request.user.username,
+                                                          keys=['id', 'amount', 'status', 'method', 'created_at'])
+    context = {'payments': payments, 'total_amount': total_amount}
+    print(context)
+    return render(request, 'accounts/transaction_view.html', context)
+
+
+def calculate_simple_interest(total_amoubt, SI, time_period):
+    pass
+
+
+def dashboard_interest_view(request):
+    labels = []
+    data = []
+    payments, total_amount = get_payment_data_by_username(ubnl_username=request.user.username,
+                                                          keys=['amount', 'created_at'])
+
+    for key, value in payments.items():
+        print(value)
+        labels.append(value.get('created_at'))
+        data.append(value.get('amount'))
+
+    time_period = []
+
+    return render(request, 'accounts/pie_chart.html', {
+        'labels': labels,
+        'data': data,
+    })
